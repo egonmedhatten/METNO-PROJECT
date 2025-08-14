@@ -116,26 +116,35 @@ def make_save_dir(run_dt):
     save_dir = os.path.join(OUTPUT_DIR, f"{year}/{month}/{day}/{hour}")
     try:
         os.makedirs(save_dir, exist_ok=False)
+        return save_dir
     except FileExistsError:
         print(f'{run_dt} exists. Check if it is populated. INTENTIONAL CRASH HERE')
-        raise Exception
-    return save_dir
+        # raise Exception # TODO: Figure out this one
+        return
 
 def main():
     current_date = START_TIME
     while current_date < END_TIME:
-        print(f'Processing {current_date}')
+        time_init = time.time()
         save_dir = make_save_dir(current_date)
-        urls = get_urls(run_dt=current_date)
-        for url in urls:
-            point_ds = extract_single_member_data(url=url)
-            name = url.split('/')[-1]
-            print(f'Downloading {name}')
-            point_ds.to_netcdf(f'{save_dir}/{name}')
+        if save_dir:
+            urls = get_urls(run_dt=current_date)
+            for url in urls:
+                point_ds = extract_single_member_data(url=url)
+                name = url.split('/')[-1]
+                print(f'Downloading {name}')
+                point_ds.to_netcdf(f'{save_dir}/{name}')
 
-        current_date += timedelta(hours=1)
+            current_date += timedelta(hours=1)
+
+            elapsed_time = time.time() - time_init
+            minutes = int((elapsed_time % 3600) // 60)
+            seconds = int(elapsed_time % 60)
+            formatted_time = f"{minutes:02}:{seconds:02}"
+            print(f'Processed {current_date} in {formatted_time}')
+        else:
+            current_date += timedelta(hours=1)
         print('Pausing a second before next hour')
         time.sleep(1)
-
 if __name__ == "__main__":
     main()
