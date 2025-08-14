@@ -1,0 +1,8 @@
+xarray
+numpy
+scipy
+pandas
+requests
+pyproj
+siphon
+netcdf4
