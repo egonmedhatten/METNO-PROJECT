@@ -61,6 +61,8 @@ def main():
             point_ds.to_netcdf(output_filename)
 
             print(f'Sucessfully saved file {file}')
+            print('Pausing for five seconds before next download')
+            time.sleep(5)
         else:
             try:
                 ds = xr.open_dataset(output_filename)
@@ -69,8 +71,7 @@ def main():
                 print(f'{output_filename} is corrupt. Removing it...')
                 os.remove(output_filename)
 
-        print('Pausing for five seconds before next download')
-        time.sleep(5)
+        
 
 if __name__=='__main__':
     main()
