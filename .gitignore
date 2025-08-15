@@ -3,3 +3,4 @@ MEPS_latest_ljungskile
 NORA3_subset_atm_ljungskile
 MEPS_archive_lagged_ljungskile
 *.sh
+__pycache__
