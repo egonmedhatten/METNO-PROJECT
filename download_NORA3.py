@@ -61,6 +61,7 @@ def main():
             point_ds.to_netcdf(output_filename)
 
             print(f'Sucessfully saved file {file}')
+
             print('Pausing for five seconds before next download')
             time.sleep(5)
         else:
@@ -72,6 +73,5 @@ def main():
                 os.remove(output_filename)
 
         
-
 if __name__=='__main__':
     main()
